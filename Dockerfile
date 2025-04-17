@@ -1,18 +1,27 @@
-# Use an official Python image as the base
-FROM python:3.11-slim
+# Use a more recent and secure Python base image
+FROM python:3.10-slim-bookworm
 
-
-# Set work directory inside the container
+# Set working directory
 WORKDIR /app
 
-# Copy the project files into the container
-COPY . .
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Install dependencies
+# Install system dependencies (minimal)
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends gcc \
+ && rm -rf /var/lib/apt/lists/*
+
+# Install Python dependencies
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port Flask will run on
+# Copy the entire application
+COPY . .
+
+# Expose the port
 EXPOSE 5000
 
-# Run the application
+# Start the Flask app
 CMD ["python", "app.py"]
