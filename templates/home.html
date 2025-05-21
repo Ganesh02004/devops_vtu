@@ -4,4 +4,8 @@
 {% block content %}
 <h2>Welcome to the Home Page</h2>
 <p>This is a simple Flask application using Docker!</p>
+
+<!-- Add the image -->
+<img src="{{ url_for('static', filename='jenkin.jpg') }}" alt="My Image" style="max-width: 100%; height: auto;">
+
 {% endblock %}
